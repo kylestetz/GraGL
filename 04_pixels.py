@@ -15,7 +15,11 @@ class PixelSketch(GraGL):
         self.empty.createEmpty(800, 800)
 
     def draw(self):
-        self.empty.draw(0,0)
+        self.empty.draw(0, 0)
 
+    def mouseDragged(self, x, y, b):
+        loc = x + y * width()
+        self.empty.pixels[loc] = (0, 255, 150, 255)
+        self.empty.updatePixels()
 
 runApp(PixelSketch())
