@@ -7,6 +7,8 @@ Full of charming little mistakes and oddities.
 Some algorithms are borrowed; credit is given where that happens.
 Established and maintained by Kyle Stetz. kylestetz@gmail.com.
 
+Some- maybe all- concepts are based on Processing & OpenFrameworks... This is the beginning of a larger effort to bring a similar high-quality graphics & interaction library to Python.
+
 Check out 01_begin.py for some eye candy and 02 & 03 to get a feel for how apps are set up.
 
 DEPENDENCIES.
@@ -14,7 +16,7 @@ DEPENDENCIES.
 Of course there's a catch- here are some dependencies.
 
 the only truly necessary piece:
-    ~PyOpenGL           http://pypi.python.org/pypi/PyOpenGL
+    ~PyOpenGL 3         http://pypi.python.org/pypi/PyOpenGL
 
 for images (GraGL_image.py):
     ~PIL                http://www.pythonware.com/products/pil/
