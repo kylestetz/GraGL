@@ -28,7 +28,14 @@ class GImage:
     def loadImage(self, filename):
         self.filename = filename
         img = Image.open(self.filename)
+        img_list = list(img.getdata())
         img_data = numpy.array(list(img.getdata()), numpy.uint8)
+
+        # pixel_data = []
+        # for i in range(len(img_list)):
+        #     pixel_data.append((200, 0, 0, 255))
+        # img_data = numpy.array(pixel_data, numpy.uint8)
+
         self.ID = glGenTextures(1)
         glBindTexture(GL_TEXTURE_2D, self.ID)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
@@ -37,6 +44,24 @@ class GImage:
         elif img.mode == "RGB":
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
         self.w, self.h = img.size[0], img.size[1]
+
+    def createEmpty(self, w, h):
+        pixel_data = []
+        for i in range(w*h):
+            pixel_data.append((0, 0, 0, 255))
+        print pixel_data[:10]
+        
+        img_data = numpy.array(pixel_data, numpy.uint8)
+        print img_data[0]
+
+        self.ID = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, self.ID)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        # if len(pixel_data[0]) == 4:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
+        # elif len(pixel_data[0]) == 3:
+        #     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
+        self.w, self.h = w, h
 
     def draw(self, x, y, w=None, h=None):
         if w == None:
