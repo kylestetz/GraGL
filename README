@@ -1,0 +1,28 @@
+GraGL!
+
+ABOUT.
+
+This is a first pass at a 2d library for prototyping interactions/interfaces in Python.
+Full of charming little mistakes and oddities.
+Some algorithms are borrowed; credit is given where that happens.
+Established and maintained by Kyle Stetz. kylestetz@gmail.com.
+
+Check out 01_begin.py for some eye candy and 02 & 03 to get a feel for how apps are set up.
+
+DEPENDENCIES.
+
+Of course there's a catch- here are some dependencies.
+
+the only truly necessary piece:
+    ~PyOpenGL           http://pypi.python.org/pypi/PyOpenGL
+
+for images (GraGL_image.py):
+    ~PIL                http://www.pythonware.com/products/pil/
+    ~numpy              http://sourceforge.net/projects/numpy/files/
+
+for fonts (GraGL_typeface.py):
+    ~PIL                http://www.pythonware.com/products/pil/
+    ~FreeType           (a C library)
+                        > http://freetype.sourceforge.net/download.html#stable
+                        > or in macports: "sudo port install freetype"
+    ~freetype-py        http://code.google.com/p/freetype-py/downloads/list
