@@ -36,6 +36,10 @@ class Begin(GraGL):
 
         self.logo.draw(width()/2 - self.logo.width()/2, height()/2 - self.logo.height()/2)
 
+        self.logo.shiftRed(-1)
+        self.logo.shiftBlue(1)
+        self.logo.updatePixels()
+
     def mousePressed(self, x, y, b):
         for i in range(4):
             self.corner_colors[i] = (random.random(), random.random(), random.random())

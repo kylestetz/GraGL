@@ -3,6 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import math
 import time
+import colorsys
 
 """
 WHAT THIS IS ALL ABOUT.
@@ -22,7 +23,7 @@ and write variables within the App.
 # e.g. for fill/stroke, style stacks, etc
 app = None
 
-# this is called from the parent GraGL class __init__()
+# this is called from GraGL.__init__()
 def setApp(a):
     global app
     app = a
@@ -103,6 +104,43 @@ def popStyle():
 def restoreStyles(items):
     global app
     app.FILL_GraGL, app.FILL_COLOR_GraGL, app.STROKE_GraGL, app.STROKE_COLOR_GraGL, app.LINE_WIDTH_GraGL = items
+
+# -----------------------------------------------------
+# COLOR TOOLS
+# -----------------------------------------------------
+
+AS_INT = 1
+
+def rgb_hsv(c):
+    return colorsys.rgb_to_hsv(c[0], c[1], c[2])
+
+def rgb_hsv_i(c):
+    color = rgb_to_float(c)
+    return colorsys.rgb_to_hsv(c[0], c[1], c[2])
+
+def hsv_rgb(c, astype=0):
+    if astype == AS_INT:
+        color = colorsys.hsv_to_rgb(c[0], c[1], c[2])
+        return rgb_to_int(color)
+    return colorsys.hsv_to_rgb(c[0], c[1], c[2])
+
+def hsv_rgba(c, astype=0):
+    if astype == AS_INT:
+        color = colorsys.hsv_to_rgb(c[0], c[1], c[2])
+        color = (color[0], color[1], color[2], 1)
+        return rgb_to_int(color)
+    color = colorsys.hsv_to_rgb(c[0], c[1], c[2])
+    return (color[0], color[1], color[2], 1)
+
+def rgb_to_int(c):
+    if len(c) == 3:
+        return (int(c[0]*255), int(c[1]*255), int(c[2]*255))
+    return (int(c[0]*255), int(c[1]*255), int(c[2]*255), int(c[3]*255))
+
+def rgb_to_float(c):
+    if len(c) == 3:
+        return (c[0]/255.0, c[1]/255.0, c[2]/255.0)
+    return (c[0]/255.0, c[1]/255.0, c[2]/255.0, c[3]/255.0)
 
 # -----------------------------------------------------
 # SHAPES & LINES

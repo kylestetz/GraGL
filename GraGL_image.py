@@ -18,6 +18,7 @@ class GImage:
         self.z = 0
         self.force_color = None
         self.pixels = None
+        self.mode = None
 
         if name:
             self.loadImage(name)
@@ -33,6 +34,7 @@ class GImage:
         img = Image.open(self.filename)
         img_data = numpy.array(list(img.getdata()), numpy.uint8)
         self.pixels = img_data
+        self.mode = img.mode
         # pixel_data = []
         # for i in range(len(img_list)):
         #     pixel_data.append((200, 0, 0, 255))
@@ -59,6 +61,7 @@ class GImage:
         # elif len(pixel_data[0]) == 3:
         #     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
         self.w, self.h = w, h
+        self.mode = "RGBA"
 
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
@@ -90,9 +93,14 @@ class GImage:
         self.force_color = (r, g, b, a)
 
     def updatePixels(self):
-        glBindTexture(GL_TEXTURE_2D, self.ID)
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.w, self.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.pixels)
+        if self.mode == "RGBA":
+            glBindTexture(GL_TEXTURE_2D, self.ID)
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.w, self.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.pixels)
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.ID)
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, self.w, self.h, 0, GL_RGB, GL_UNSIGNED_BYTE, self.pixels)
 
     #---------------------------------
     # Getters
@@ -103,3 +111,37 @@ class GImage:
 
     def height(self):
         return self.h
+
+    #---------------------------------
+    # Some Experimental Methods
+    #---------------------------------    
+
+    # these shifts are relative to the current color.
+    # they utilize numpy's scalar operations, meaning you
+    # can do one operation across the entire array without a for loop.
+    # the syntax is array[beginning:end, index of color tuple]
+
+    def shiftRed(self, v):
+        self.pixels[:, 0] += v
+
+    def shiftGreen(self, v):
+        self.pixels[:, 1] += v
+
+    def shiftBlue(self, v):
+        self.pixels[:, 2] += v
+
+    def shiftAlpha(self, v):
+        if self.mode == "RGBA":
+            self.pixels[:, 0] += v
+
+    def shiftColors(self, r, g, b, a=None):
+        if r:
+            self.pixels[:, 0] += r
+        if g:
+            self.pixels[:, 1] += g
+        if b:
+            self.pixels[:, 2] += b
+        if a and self.mode == "RGBA":
+            self.pixels[:, 3] += a
+
+
